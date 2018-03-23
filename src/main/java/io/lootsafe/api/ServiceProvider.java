@@ -20,8 +20,9 @@ public class ServiceProvider {
     private static ServiceProvider instance;
     private Client clientInterface;
     private boolean working = false;
+    private boolean debug = true;
 
-    private ServiceProvider(ClientBuilder builder) {
+    private ServiceProvider(ServiceBuilder builder) {
         this.clientInterface = builder.clientInterface;
         privateKey = builder.privateKey;
         APIHost = builder.APIHost;
@@ -31,13 +32,19 @@ public class ServiceProvider {
     }
 
 
+    public String getPrivateKey(){
+        return privateKey;
+    }
     /**
      * Use to get the built URL
      * @return
      */
-
     public String getURL(){
         return APIURL;
+    }
+
+    public boolean isDebugging(){
+        return debug;
     }
 
     /**
@@ -51,30 +58,30 @@ public class ServiceProvider {
     /**
      * This is a builder which provides a service provider for the client.
      */
-    public static class ClientBuilder{
+    public static class ServiceBuilder {
         private Client clientInterface;
         private String privateKey;
         private String APIHost;
         private String APIVersion;
 
-        public ClientBuilder() {}
+        public ServiceBuilder() {}
 
-        public ClientBuilder withClient(Client clientInterface){
+        public ServiceBuilder withClient(Client clientInterface){
             this.clientInterface = clientInterface;
             return this;
         }
 
-        public ClientBuilder withPrivateKey(String privateKey) {
+        public ServiceBuilder withPrivateKey(String privateKey) {
             this.privateKey = privateKey;
             return this;
         }
 
-        public ClientBuilder withHost(String APIhost) {
+        public ServiceBuilder withHost(String APIhost) {
             this.APIHost = APIhost;
             return this;
         }
 
-        public ClientBuilder withVersion(String APIVersion) {
+        public ServiceBuilder withVersion(String APIVersion) {
             this.APIVersion = APIVersion;
             return this;
         }
