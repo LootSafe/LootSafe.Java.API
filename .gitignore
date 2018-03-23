@@ -1,6 +1,7 @@
 #IDE
 .idea
 .gradle
+gradle
 build/
 
 #Possible slips
