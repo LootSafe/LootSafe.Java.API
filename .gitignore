@@ -1,0 +1,12 @@
+#IDE
+.idea
+.gradle
+build/
+
+#Possible slips
+*.class
+*.so
+*.o
+
+
+
