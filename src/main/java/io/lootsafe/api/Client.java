@@ -5,4 +5,13 @@ package io.lootsafe.api;
  */
 public interface Client {
 
+
+
+    //General
+
+
+
+
+
+
 }
