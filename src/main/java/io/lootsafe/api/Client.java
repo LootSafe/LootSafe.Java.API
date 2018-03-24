@@ -5,13 +5,8 @@ package io.lootsafe.api;
  */
 public interface Client {
 
-
-
-    //General
-
-
-
-
-
+    void notifyPlayer(String playerID);
+    void notifySuccess(String transactionID);
+    void notifyFailure(String transactionID);
 
 }

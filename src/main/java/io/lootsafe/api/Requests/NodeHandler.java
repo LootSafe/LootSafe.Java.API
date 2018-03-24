@@ -58,4 +58,8 @@ public class NodeHandler {
         return ("Error Contacting LootSafe Servers");
     }
 
+    public boolean test(){
+        return true;
+    }
+
 }

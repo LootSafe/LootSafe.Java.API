@@ -6,9 +6,29 @@ import io.lootsafe.api.ServiceProvider;
  */
 public class TestClient implements Client{
 
-    ServiceProvider sv = new ServiceProvider.ServiceBuilder()
-            .withHost("http://localhost:1337/raptorstrike/")
-            .withPrivateKey("dkjsdflkjdfnsf")
-            .withVersion("1")
-            .build();
+
+    public static void main(String [] args){
+        ServiceProvider sv = new ServiceProvider.ServiceBuilder()
+                .withHost("http://localhost:1337/raptorstrike/")
+                .withPrivateKey("dkjsdflkjdfnsf")
+                .withVersion("1")
+                .build();
+        sv.startService();
+        sv.stopService();
+    }
+
+    @Override
+    public void notifyPlayer(String playerID) {
+
+    }
+
+    @Override
+    public void notifySuccess(String transactionID) {
+
+    }
+
+    @Override
+    public void notifyFailure(String transactionID) {
+
+    }
 }
