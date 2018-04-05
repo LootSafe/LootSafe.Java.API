@@ -19,10 +19,14 @@ import javax.ws.rs.core.Response;
 public class NodeHandler {
 
     private final WebTarget webTarget;
-    private final String APIURL;
+    private final String apiUrl;
+    private final String apiKey;
+    private final String otp;
 
-    public NodeHandler(String APIURL) {
-        this.APIURL = APIURL;
+    public NodeHandler(String apiUrl, String apiKey, String otp) {
+        this.apiUrl = apiUrl;
+        this.apiKey = apiKey;
+        this.otp = otp;
         ClientConfig clientConfig = new ClientConfig()
                 .property(ClientProperties.READ_TIMEOUT, 30000)
                 .property(ClientProperties.CONNECT_TIMEOUT, 5000)
@@ -32,30 +36,34 @@ public class NodeHandler {
                 .newBuilder()
                 //.sslContext(ssl)
                 .newClient(clientConfig)
-                .target(APIURL);
+                .target(apiUrl);
         U.info("Constructed a new client for " + webTarget.getUri().toString());
     }
 
 
-    public String genericRequest(String formedNodeString) {
+    public JsonObject genericRequest(String formedNodeString) {
         U.debug(formedNodeString);
-        U.debug("Trying to retrieve info from " + APIURL + "/" + formedNodeString);
+        U.debug("Trying to retrieve info from " + apiUrl + "/" + formedNodeString);
         try {
             Response response = webTarget
                     .path("/" + formedNodeString)
                     .request(MediaType.APPLICATION_JSON)
-                    .header("key", ServiceProvider.getInstance().getPrivateKey())
+                    .header("key", apiKey)
+                    .header("otp", otp)
                     .get();
             U.debug("Status: " + response.getStatus());
-            if (!(response.getStatus() == 404)) {
+            if (response.getStatus() == 200) {
                 JsonObject responseJson = response.readEntity(JsonObject.class);
-
-                return responseJson.getString("message");
+                return responseJson;
+            } else {
+                U.error("There was an error while processing your request!");
+                U.error("Status: " + response.getStatusInfo().toString());
+                return null;
             }
         } catch (Exception e) {
             U.error("Error Contacting LootSafe Servers");
         }
-        return ("Error Contacting LootSafe Servers");
+        return null;
     }
 
     public boolean test(){
