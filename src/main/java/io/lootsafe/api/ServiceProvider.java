@@ -18,6 +18,7 @@ public class ServiceProvider {
     private String APIHost = "";
     private String APIVersion = "";
     private String APIURL;
+    private String otp;
 
     private static ServiceProvider instance;
     private Client clientInterface;
@@ -28,6 +29,7 @@ public class ServiceProvider {
     private ServiceProvider(ServiceBuilder builder) {
         clientInterface = builder.clientInterface;
         privateKey = builder.privateKey;
+        otp = builder.otp;
         APIHost = builder.APIHost;
         APIVersion = builder.APIVersion;
         APIURL = APIHost + "/v" + APIVersion + "/";
@@ -40,7 +42,7 @@ public class ServiceProvider {
     }
 
     public void startService(){
-        nh = new NodeHandler(APIURL);
+        nh = new NodeHandler(APIURL, privateKey, otp);
         if(!nh.test()) {
             working = false;
             U.error("LootSafe Servers are Unreachable!");
@@ -49,6 +51,14 @@ public class ServiceProvider {
         working = true;
     }
 
+    //TODO refactor to requests
+    /**
+     * Returns the NodeHandler
+     * @return
+     */
+    public NodeHandler getNodeHandler() {
+        return nh;
+    }
 
     public String getPrivateKey(){
         return privateKey;
@@ -81,6 +91,7 @@ public class ServiceProvider {
         private String privateKey;
         private String APIHost;
         private String APIVersion;
+        private String otp;
 
         public ServiceBuilder() {}
 
@@ -104,14 +115,15 @@ public class ServiceProvider {
             return this;
         }
 
+        public ServiceBuilder withOTP(String otp){
+            this.otp = otp;
+            return this;
+        }
+
         public ServiceProvider build(){
             return new ServiceProvider(this);
         }
     }
-
-
-
-
 
 
 }

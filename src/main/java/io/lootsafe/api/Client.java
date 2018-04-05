@@ -9,4 +9,8 @@ public interface Client {
     void notifySuccess(String transactionID);
     void notifyFailure(String transactionID);
 
+
+
+
+
 }
