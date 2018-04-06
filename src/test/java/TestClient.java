@@ -5,6 +5,9 @@ import io.lootsafe.api.ServiceProvider;
 import io.lootsafe.api.U;
 import sun.misc.Request;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 /**
  * Created by Adam Sanchez on 3/23/2018.
  */
@@ -42,6 +45,9 @@ public class TestClient implements Client{
         U.debugSet(Requests.getDeconsructables());
         U.debugSet(Requests.getRecipe(testItem));
         U.debugSet(Requests.getDeconstructionRecipe(testItem));
+
+        //U.debug(Requests.postNewRecipe(Json.createObjectBuilder().build()).toString());
+        U.debug(Requests.postRecipeRemoval("0x003893089348389349scdf0389").toString());
 
 
         sv.stopService();
