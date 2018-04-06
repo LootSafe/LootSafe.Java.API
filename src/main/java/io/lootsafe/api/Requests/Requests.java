@@ -110,12 +110,22 @@ public class Requests {
         return recipe;
     }
 
-    public static String postNewRecipe(){
+    public static JsonObject postNewRecipe(JsonObject recipeDetails){
+        JsonObject json = getInstance().postRequest(newRecipe, recipeDetails);
 
+        if(json!=null) return json;
+
+        return null;
     }
 
-    public static String postRecipeRemoval(){
+    public static JsonObject postRecipeRemoval(String itemAddress){
+        JsonObject recipeDetails = Json.createObjectBuilder()
+                .add("item", itemAddress)
+                .build();
+        JsonObject json = getInstance().postRequest(removeRecipe, recipeDetails);
+        if(json!=null) return json;
 
+        return null;
     }
 
 
