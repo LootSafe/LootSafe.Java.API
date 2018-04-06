@@ -45,7 +45,7 @@ public class NodeHandler {
 
     public JsonObject genericRequest(String formedNodeString) {
         U.debug(formedNodeString);
-        U.debug("Trying to retrieve info from " + apiUrl + "/" + formedNodeString);
+        U.debug("Trying to retrieve info from " + apiUrl + formedNodeString);
         try {
             Response response = webTarget
                     .path("/" + formedNodeString)
@@ -70,7 +70,8 @@ public class NodeHandler {
 
     public JsonObject postRequest(String formedNodeString, JsonObject input){
         U.debug(formedNodeString);
-        U.debug("Trying to POST to " + apiUrl + "/" + formedNodeString);
+        U.debug("Trying to POST to " + apiUrl + formedNodeString);
+        JsonObject responseJson;
         try {
             Response response = webTarget
                     .path("/" + formedNodeString)
@@ -80,12 +81,12 @@ public class NodeHandler {
                     .post(Entity.json(input));
             U.debug("Status:" + response.getStatus());
             if (response.getStatus() == 200) {
-                JsonObject responseJson = response.readEntity(JsonObject.class);
+                responseJson = response.readEntity(JsonObject.class);
                 return responseJson;
             } else {
                 U.error("There was an error while processing your request!");
                 U.error("Status: " + response.getStatus() + " Message: " + response.getStatusInfo());
-                return null;
+                return response.readEntity(JsonObject.class);
             }
         } catch (Exception e) {
             U.error("Error Contacting LootSafe Servers");

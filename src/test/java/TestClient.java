@@ -6,6 +6,8 @@ import io.lootsafe.api.U;
 import sun.misc.Request;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
@@ -18,11 +20,24 @@ public class TestClient implements Client{
         String testEthAccount = "0x6e029820707c41f9ce04070930e3d650db769ed6";
         String testItem = "0x33e7e1ee81dcb63f28f264beedce6f6941bde451";
         String rarity = "uncommon";
+        JsonObject testRecipe = Json.createObjectBuilder()
+                .add("result","0x0")
+                .add("materials", Json.createArrayBuilder()
+                        .add("0x01")
+                        .add("0x02")
+                        .add("0x03")
+                        .build())
+                .add("counts", Json.createArrayBuilder()
+                        .add(2)
+                        .add(5)
+                        .add(3)
+                        .build())
+                .build();
 
         ServiceProvider sv = new ServiceProvider.ServiceBuilder()
                 .withHost("http://localhost:1337")
-                .withPrivateKey("dkjsdflkjdfnsf")
-                .withOTP("rsa39uwoirjsfhjldkkufjwob4wjwoinflsdjfuh3dhajdiusfoksdfksdjkfjsdkfjsdlkfsdkfkjsdnf3efpf90iosdjlkmsdkfmsnmcajboejsdfm")
+                .withPrivateKey("pWpzWuxoKUKAmlHc0wPi7lFS38FTth")
+                .withOTP("ccccccglcrcdfbvrelclvcgjbbkkjtkhcvdbnlljlgke")
                 .withVersion("1")
                 .build();
         sv.startService();
@@ -46,9 +61,48 @@ public class TestClient implements Client{
         U.debugSet(Requests.getRecipe(testItem));
         U.debugSet(Requests.getDeconstructionRecipe(testItem));
 
-        //U.debug(Requests.postNewRecipe(Json.createObjectBuilder().build()).toString());
-        U.debug(Requests.postRecipeRemoval("0x003893089348389349scdf0389").toString());
 
+        U.debug(Requests.postNewRecipe(testRecipe).toString());
+        U.debug(Requests.postRecipeRemoval(testItem).toString());
+
+
+        U.debug("-------------------------------------------------------------------");
+        U.debug("---------------------------Events----------------------------------");
+        U.debug("-------------------------------------------------------------------");
+
+        U.debug(Requests.getEvents().toString());
+
+        U.debug("-------------------------------------------------------------------");
+        U.debug("---------------------------General---------------------------------");
+        U.debug("-------------------------------------------------------------------");
+
+        U.debug(Requests.getMeta().toString());
+        U.debug(Requests.getTokenAddress());
+        U.debug(Requests.postNewItem("Banana", "0x98734987394870937u9980879870", "100").toString());
+        U.debug(Requests.postSpawnItem(testItem, testEthAccount).toString());
+        U.debug(Requests.postClearAvailibilty(testItem).toString());
+
+        U.debug("-------------------------------------------------------------------");
+        U.debug("--------------------------Items------------------------------------");
+        U.debug("-------------------------------------------------------------------");
+
+        U.debugSet(Requests.getItemsList());
+        U.debugSet(Requests.getItemAddresses());
+        U.debug(Requests.getItem("banana"));
+        U.debug(Requests.getItemByAddress(testItem).toString());
+        U.debug(Requests.getLedger().toString());
+
+        U.debug("-------------------------------------------------------------------");
+        U.debug("-------------------------LootBox-----------------------------------");
+        U.debug("-------------------------------------------------------------------");
+
+        U.debug(Requests.postLootboxAddItem(testItem, rarity).toString());
+        U.debugSet(Requests.getLootboxItems(rarity));
+        U.debug(Requests.getCost());
+        U.debug(Requests.postLootboxChanceUpdate("50/30/78").toString());
+        U.debug(Requests.postLootboxCostUpdate("343").toString());
+
+        U.debugSet(Requests.getLootboxChances());
 
         sv.stopService();
     }
