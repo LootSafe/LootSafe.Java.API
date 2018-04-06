@@ -51,13 +51,13 @@ public class NodeHandler {
                     .header("key", apiKey)
                     .header("otp", otp)
                     .get();
-            U.debug("Status: " + response.getStatus());
+            U.debug("Status:" + response.getStatus());
             if (response.getStatus() == 200) {
                 JsonObject responseJson = response.readEntity(JsonObject.class);
                 return responseJson;
             } else {
                 U.error("There was an error while processing your request!");
-                U.error("Status: " + response.getStatusInfo().toString());
+                U.error("Status: " + response.getStatus() + " Message: " + response.getStatusInfo());
                 return null;
             }
         } catch (Exception e) {
