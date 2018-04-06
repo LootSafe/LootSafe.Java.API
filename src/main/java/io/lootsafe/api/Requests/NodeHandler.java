@@ -8,8 +8,10 @@ import org.glassfish.jersey.client.ClientProperties;
 import javax.json.JsonObject;
 import javax.json.stream.JsonGenerator;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 
 /**
@@ -51,6 +53,31 @@ public class NodeHandler {
                     .header("key", apiKey)
                     .header("otp", otp)
                     .get();
+            U.debug("Status:" + response.getStatus());
+            if (response.getStatus() == 200) {
+                JsonObject responseJson = response.readEntity(JsonObject.class);
+                return responseJson;
+            } else {
+                U.error("There was an error while processing your request!");
+                U.error("Status: " + response.getStatus() + " Message: " + response.getStatusInfo());
+                return null;
+            }
+        } catch (Exception e) {
+            U.error("Error Contacting LootSafe Servers");
+        }
+        return null;
+    }
+
+    public JsonObject postRequest(String formedNodeString, JsonObject input){
+        U.debug(formedNodeString);
+        U.debug("Trying to POST to " + apiUrl + "/" + formedNodeString);
+        try {
+            Response response = webTarget
+                    .path("/" + formedNodeString)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("key", apiKey)
+                    .header("otp", otp)
+                    .post(Entity.json(input));
             U.debug("Status:" + response.getStatus());
             if (response.getStatus() == 200) {
                 JsonObject responseJson = response.readEntity(JsonObject.class);
