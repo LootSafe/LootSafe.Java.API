@@ -252,13 +252,13 @@ public class Requests {
         return items;
     }
 
-    public static String getItem(String itemName){
+    public static String getItem(String itemName) {
         JsonObject response = getInstance().genericRequest(item + "/" + itemName);
-        if(response != null) return response.getString("itemResponse");
+        if (response != null) return response.getString("itemResponse");
         return "";
     }
 
-    public static JsonObject getItemByAddress(String itemAddress){
+    public static JsonObject getItemByAddress(String itemAddress) {
         JsonObject response = getInstance().genericRequest(itemByAddress + "/" + itemAddress);
         if (response != null) return response;
         return Json.createObjectBuilder()
@@ -266,15 +266,15 @@ public class Requests {
                 .build();
     }
 
-    public static JsonObject getLedger(){
+    public static JsonObject getLedger() {
         JsonObject response = getInstance().genericRequest(ledger);
-        if(response != null) return response;
+        if (response != null) return response;
         return Json.createObjectBuilder()
                 .add("Error", "Error")
                 .build();
     }
 
-    public static Set<String> getItemAddresses(){
+    public static Set<String> getItemAddresses() {
         JsonObject response = getInstance().genericRequest(itemAddresses);
         JsonArray itemsArray = response.getJsonObject("data").getJsonArray("items");
         Set<String> items = new HashSet<String>();
@@ -286,24 +286,23 @@ public class Requests {
         return items;
     }
 
-
     /****************************************************************************************************/
     /**(**************************************LootBox***************************************************/
     /****************************************************************************************************/
 
-    public static Set<String> getLootboxChances(){
-            JsonObject response = getInstance().genericRequest(chances);
-            JsonArray chanceArray = response.getJsonArray("data");
-            Set<String> chances = new HashSet<String>();
-            if (response != null) {
-                for (int ix = 0; ix < chanceArray.size(); ix++) {
-                    chances.add(chanceArray.getString(ix));
-                }
+    public static Set<String> getLootboxChances() {
+        JsonObject response = getInstance().genericRequest(chances);
+        JsonArray chanceArray = response.getJsonArray("data");
+        Set<String> chances = new HashSet<String>();
+        if (response != null) {
+            for (int ix = 0; ix < chanceArray.size(); ix++) {
+                chances.add(chanceArray.getString(ix));
             }
-            return chances;
+        }
+        return chances;
     }
 
-    public static Set<String> getLootboxItems(String rarity){
+    public static Set<String> getLootboxItems(String rarity) {
         JsonObject response = getInstance().genericRequest(lootboxItems + "/" + rarity);
         JsonArray itemsArray = response.getJsonArray("data");
         Set<String> items = new HashSet<String>();
@@ -315,15 +314,15 @@ public class Requests {
         return items;
     }
 
-    public static String getCost(){
+    public static String getCost() {
         JsonObject response = getInstance().genericRequest(lootboxCost);
-        if(response != null) return response.getString("data");
+        if (response != null) return response.getString("data");
         return "";
     }
 
-    public static JsonObject postLootboxCostUpdate(String newCost){
+    public static JsonObject postLootboxCostUpdate(String newCost) {
         JsonObject response = getInstance().genericRequest(lootboxCostUpdate + "/" + newCost);
-        if(response != null) return response;
+        if (response != null) return response;
         return Json.createObjectBuilder()
                 .add("Error", "Error")
                 .build();
@@ -338,29 +337,21 @@ public class Requests {
                 .build();
     }
 
-    public static JsonObject postLootboxAddItem(String itemAddress, String rarity){
+    public static JsonObject postLootboxAddItem(String itemAddress, String rarity) {
         JsonObject jsonRequest = Json.createObjectBuilder()
                 .add("item", itemAddress)
                 .add("rarity", rarity)
                 .build();
-        JsonObject response = getInstance().postRequest(lootboxAdd , jsonRequest);
+        JsonObject response = getInstance().postRequest(lootboxAdd, jsonRequest);
         if (response != null) return response;
         return Json.createObjectBuilder()
                 .add("Error", "Error")
                 .build();
     }
 
-
-
-
-
-
-
-
-        /****************************************************************************************************/
     /****************************************************************************************************/
     /****************************************************************************************************/
-
+    /****************************************************************************************************/
 
     private static NodeHandler getInstance() {
         return ServiceProvider.getInstance().getNodeHandler();
