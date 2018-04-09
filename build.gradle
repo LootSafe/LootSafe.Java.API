@@ -65,9 +65,11 @@ dependencies {
 
     compile 'javax.inject:javax.inject:1'
 
-
-
     compile fileTree(dir: 'lib', include: '*.jar')
+
+    //Testing
+
+    testCompile 'junit:junit:4.12'
 
 }
 
