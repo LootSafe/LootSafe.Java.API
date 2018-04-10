@@ -30,6 +30,11 @@ public class U {
         System.out.println("[Error]: " + error);
     }
 
+    public static void error(String error, Exception e){
+        System.out.println("[Error]: " + error);
+        System.out.println(e.getCause());
+    }
+
     public static void debugMap(Map<String,String> map){
         Iterator it = map.entrySet().iterator();
         while(it.hasNext()) {
