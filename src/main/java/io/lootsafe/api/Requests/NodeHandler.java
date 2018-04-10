@@ -67,6 +67,7 @@ public class NodeHandler {
                 throw new WebApplicationException(response);
             } else {
                 JsonObject responseJson = response.readEntity(JsonObject.class);
+                U.debug(responseJson.toString());
                 return responseJson;
             }
 
@@ -184,7 +185,7 @@ public class NodeHandler {
             U.debug(jsonItems.toString());
             for (int ix = 0; ix < jsonItems.size(); ix++) {
                 JsonArray innerArray = jsonItems.getJsonArray(ix);
-                for (int i = 0; ix < innerArray.size(); i++) {
+                for (int i = 0; i < innerArray.size(); i++) {
                     recipe.add(innerArray.getString(i));
                 }
             }
@@ -203,7 +204,7 @@ public class NodeHandler {
             U.debug(jsonItems.toString());
             for (int ix = 0; ix < jsonItems.size(); ix++) {
                 JsonArray innerArray = jsonItems.getJsonArray(ix);
-                for (int i = 0; ix < innerArray.size(); i++) {
+                for (int i = 0; i < innerArray.size(); i++) {
                     recipe.add(innerArray.getString(i));
                 }
             }
@@ -314,10 +315,9 @@ public class NodeHandler {
         return items;
     }
 
-    public String getItem(String itemName) {
+    public JsonObject getItem(String itemName) {
         JsonObject response = genericRequest(Requests.item + "/" + itemName);
-        if (response != null) return response.getString("itemResponse");
-        return "";
+        return response;
     }
 
     public JsonObject getItemByAddress(String itemAddress) {
@@ -376,10 +376,13 @@ public class NodeHandler {
         return items;
     }
 
-    public String getCost() {
+    public double getCost() {
         JsonObject response = genericRequest(Requests.lootboxCost);
-        if (response != null) return response.getString("data");
-        return "";
+        try {
+            return Double.parseDouble(response.getString("data"));
+        } catch (NumberFormatException e) {
+            throw new WebApplicationException("Something is Wrong with LootSafe! We did not receive a number for the balance! \n" + response.toString());
+        }
     }
 
     public JsonObject postLootboxCostUpdate(String newCost) {
