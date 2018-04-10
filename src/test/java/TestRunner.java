@@ -3,8 +3,8 @@ import io.lootsafe.api.Requests.NodeHandler;
 import io.lootsafe.api.Requests.Requests;
 import io.lootsafe.api.ServiceProvider;
 import io.lootsafe.api.U;
-import sun.misc.Request;
-
+import org.junit.Test;
+import static org.junit.Assert.*;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -13,33 +13,35 @@ import javax.json.JsonObjectBuilder;
 /**
  * Created by Adam Sanchez on 3/23/2018.
  */
-public class TestClient implements Client{
 
+public class TestClient {
+
+    static String testEthAccount = "0x6e029820707c41f9ce04070930e3d650db769ed6";
+    static String testItem = "0x33e7e1ee81dcb63f28f264beedce6f6941bde451";
+    static String rarity = "uncommon";
+    static JsonObject testRecipe = Json.createObjectBuilder()
+            .add("result","0x0")
+            .add("materials", Json.createArrayBuilder()
+                    .add("0x01")
+                    .add("0x02")
+                    .add("0x03")
+                    .build())
+            .add("counts", Json.createArrayBuilder()
+                    .add(2)
+                    .add(5)
+                    .add(3)
+                    .build())
+            .build();
+
+    static ServiceProvider sv = new ServiceProvider.ServiceBuilder()
+            .withHost("http://localhost:1337")
+            .withPrivateKey("pWpzWuxoKUKAmlHc0wPi7lFS38FTth")
+            .withOTP("ccccccglcrcdfbvrelclvcgjbbkkjtkhcvdbnlljlgke")
+            .withVersion("1")
+            .build();
 
     public static void main(String [] args){
-        String testEthAccount = "0x6e029820707c41f9ce04070930e3d650db769ed6";
-        String testItem = "0x33e7e1ee81dcb63f28f264beedce6f6941bde451";
-        String rarity = "uncommon";
-        JsonObject testRecipe = Json.createObjectBuilder()
-                .add("result","0x0")
-                .add("materials", Json.createArrayBuilder()
-                        .add("0x01")
-                        .add("0x02")
-                        .add("0x03")
-                        .build())
-                .add("counts", Json.createArrayBuilder()
-                        .add(2)
-                        .add(5)
-                        .add(3)
-                        .build())
-                .build();
 
-        ServiceProvider sv = new ServiceProvider.ServiceBuilder()
-                .withHost("http://localhost:1337")
-                .withPrivateKey("pWpzWuxoKUKAmlHc0wPi7lFS38FTth")
-                .withOTP("ccccccglcrcdfbvrelclvcgjbbkkjtkhcvdbnlljlgke")
-                .withVersion("1")
-                .build();
         sv.startService();
 
 
@@ -47,7 +49,7 @@ public class TestClient implements Client{
         U.debug("---------------------------Balances--------------------------------");
         U.debug("-------------------------------------------------------------------");
 
-        U.info(sv.getNodeHandler().genericRequest("").toString());
+        //U.info(sv.getNodeHandler().genericRequest("").toString());
         U.info(Requests.getBalanceToken(testEthAccount));
         U.info(Requests.getBalanceItem(testItem, testEthAccount));
         U.debugMap(Requests.getBalanceItems(testEthAccount));
@@ -104,21 +106,18 @@ public class TestClient implements Client{
 
         U.debugSet(Requests.getLootboxChances());
 
+
+
         sv.stopService();
     }
 
-    @Override
-    public void notifyPlayer(String playerID) {
-
-    }
-
-    @Override
-    public void notifySuccess(String transactionID) {
-
-    }
-
-    @Override
-    public void notifyFailure(String transactionID) {
-
+    @Test
+    public void testBalance(){
+        sv.startService();
+        String response = Requests.getBalanceToken(testEthAccount);
+        assertNotNull(response);
+        assertTrue(Double.parseDouble(response) <= 0 || Double.parseDouble(response) > 0);
+        assertEquals("0", response);
+        sv.stopService();
     }
 }

@@ -7,6 +7,8 @@ import org.glassfish.jersey.client.ClientProperties;
 
 import javax.json.JsonObject;
 import javax.json.stream.JsonGenerator;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -54,24 +56,23 @@ public class NodeHandler {
                     .header("otp", otp)
                     .get();
             U.debug("Status:" + response.getStatus());
-            if (response.getStatus() == 200) {
+            if (response.getStatus() != 200) {
+                U.debug("There was an error while processing your request!");
+                throw new WebApplicationException(response);
+            } else {
                 JsonObject responseJson = response.readEntity(JsonObject.class);
                 return responseJson;
-            } else {
-                U.error("There was an error while processing your request!");
-                U.error("Status: " + response.getStatus() + " Message: " + response.getStatusInfo());
-                return null;
             }
-        } catch (Exception e) {
-            U.error("Error Contacting LootSafe Servers");
+
+        } catch (ProcessingException e) {
+            U.debug("Error Contacting LootSafe Servers");
+            throw e;
         }
-        return null;
     }
 
-    public JsonObject postRequest(String formedNodeString, JsonObject input){
+    public JsonObject postRequest(String formedNodeString, JsonObject input) {
         U.debug(formedNodeString);
         U.debug("Trying to POST to " + apiUrl + formedNodeString);
-        JsonObject responseJson;
         try {
             Response response = webTarget
                     .path("/" + formedNodeString)
@@ -80,21 +81,20 @@ public class NodeHandler {
                     .header("otp", otp)
                     .post(Entity.json(input));
             U.debug("Status:" + response.getStatus());
-            if (response.getStatus() == 200) {
-                responseJson = response.readEntity(JsonObject.class);
-                return responseJson;
+            if (response.getStatus() != 200) {
+                U.debug("There was an error while processing your request!");
+                throw new WebApplicationException(response);
             } else {
-                U.error("There was an error while processing your request!");
-                U.error("Status: " + response.getStatus() + " Message: " + response.getStatusInfo());
-                return response.readEntity(JsonObject.class);
+                JsonObject responseJson = response.readEntity(JsonObject.class);
+                return responseJson;
             }
-        } catch (Exception e) {
-            U.error("Error Contacting LootSafe Servers");
+        } catch (ProcessingException e) {
+            U.debug("Error Contacting LootSafe Servers");
+            throw e;
         }
-        return null;
     }
 
-    public boolean test(){
+    public boolean test() {
         return true;
     }
 
