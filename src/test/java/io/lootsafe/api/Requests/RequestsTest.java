@@ -8,6 +8,11 @@ import org.junit.runner.JUnitCore;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
+
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +38,7 @@ public class RequestsTest {
             .build();
 
     static ServiceProvider sv = new ServiceProvider.ServiceBuilder()
+            .withDebug(true)
             .withHost("http://localhost:1337")
             .withPrivateKey("pWpzWuxoKUKAmlHc0wPi7lFS38FTth")
             .withOTP("ccccccglcrcdfbvrelclvcgjbbkkjtkhcvdbnlljlgke")
@@ -41,111 +47,417 @@ public class RequestsTest {
 
     @Test
     public void getBalanceToken() throws Exception {
-        sv.startService();
-        String response = Requests.getBalanceToken(testEthAccount);
-        double responseNumber = Double.parseDouble(response);
-        assertNotNull(response);
-        assertTrue(responseNumber <= 0 || responseNumber > 0);
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            double response = nh.getBalanceToken(testEthAccount);
+            assertNotNull(response);
+            assertTrue(response <= 0 || response > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getBalanceItem() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            int response = nh.getBalanceItem(testItem, testEthAccount);
+            assertNotNull(response);
+            assertTrue(response <= 0 || response > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getBalanceItems() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Map<String,String> response = nh.getBalanceItems(testEthAccount);
+            U.debugMap(response);
+            assertNotNull(response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good! We weren't able to connect to the LootSafeServer!", e);
+        }
     }
 
     @Test
     public void getCraftables() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getCraftables();
+            U.debugSet(response);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getDeconsructables() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getDeconsructables();
+            U.debugSet(response);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getRecipe() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getRecipe("0x2f6e55f42deb93ffd47bbc96d776f6871b6790b5");
+            U.debugSet(response);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getDeconstructionRecipe() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getDeconstructionRecipe("0x2f6e55f42deb93ffd47bbc96d776f6871b6790b5");
+            U.debugSet(response);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
+
 
     @Test
     public void postNewRecipe() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postNewRecipe(testRecipe);
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertEquals("Message", "New recipe added", response.getString("message"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void postRecipeRemoval() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postRecipeRemoval("0x2f6e55f42deb93ffd47bbc96d776f6871b6790b5");
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertEquals("Message", "Recipe removed", response.getString("message"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getEvents() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.getEvents();
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertEquals("Message", "Events Fetched", response.getString("message"));
+            assertTrue(response.getJsonArray("data").getJsonObject(0).getString("_id") != "");
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getMeta() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.getMeta();
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getString("name").equals("LootSafe.api"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getTokenAddress() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            String response = nh.getTokenAddress();
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.length() > 0);
+            assertTrue("Is an address", response.contains("0x"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
+    //TODO Returns 500 in a 200
     @Test
     public void postNewItem() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postNewItem("myTestItem", "myRandomIDForMyItem", "10");
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+            if(e.getResponse().getStatus() == 500){
+                JsonObject response = e.getResponse().readEntity(JsonObject.class);
+                U.debug(response.toString());
+            }
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
+
+    //TODO Throwing 500 no info
     @Test
     public void postSpawnItem() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postSpawnItem("0x064ffa1ec3ad633dc098e4c2007f6689708ae23b", testEthAccount);
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            switch(e.getResponse().getStatus()){
+                case 500:
+                    U.debug("What went wrong?");
+                    U.debug(e.getResponse().readEntity(JsonObject.class).toString());
+                    break;
+                default:
+                    U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+            }
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void postClearAvailibilty() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postClearAvailibilty("0x064ffa1ec3ad633dc098e4c2007f6689708ae23b");
+            U.debug(response.toString());
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue(response.getString("message").equals("Cleared available supply of item"));
+            assertTrue(response.getJsonObject("data").getString("tx").contains("0x"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+            if(e.getResponse().getStatus() == 500){
+                JsonObject response = e.getResponse().readEntity(JsonObject.class);
+                U.debug(response.toString());
+            }
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getItemsList() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getItemsList();
+            U.debugSet(response);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getItem() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.getItem("0xa571d199f6784a9de6124a87f13ce5e485da6ec4");
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getJsonObject("data").getString("address").equals("0xa571d199f6784a9de6124a87f13ce5e485da6ec4"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
+    //TODO API Call same as getItem ?
     @Test
     public void getItemByAddress() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.getItemByAddress("0xa571d199f6784a9de6124a87f13ce5e485da6ec4");
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getJsonObject("data").getString("address").equals("0xa571d199f6784a9de6124a87f13ce5e485da6ec4"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getLedger() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.getLedger();
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getString("message").equals("Items fetched"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getItemAddresses() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getItemAddresses();
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getLootboxChances() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getLootboxChances();
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getLootboxItems() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            Set<String> response = nh.getLootboxItems(rarity);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void getCost() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            double response = nh.getCost();
+            U.debug(response + "");
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response <= 0 || response > 0);
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void postLootboxCostUpdate() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postLootboxCostUpdate("100");
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getJsonObject("data").getString("tx").contains("0x"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
     @Test
     public void postLootboxChanceUpdate() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postLootboxChanceUpdate("10/10/10");
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getJsonObject("data").getString("tx").contains("0x"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
+    //TODO 500
     @Test
     public void postLootboxAddItem() throws Exception {
+        NodeHandler nh = sv.startService().getNodeHandler();
+        try {
+            JsonObject response = nh.postLootboxAddItem("0x064ffa1ec3ad633dc098e4c2007f6689708ae23b", rarity);
+            assertNotNull("Is not null", response);
+            assertTrue("Contains Data", response.size() > 0);
+            assertTrue("Data Validation", response.getJsonObject("data").getString("tx").contains("0x"));
+        } catch (WebApplicationException e) {
+            U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+        } catch (ProcessingException e) {
+            U.error("That's no good!", e);
+        }
     }
 
 }
