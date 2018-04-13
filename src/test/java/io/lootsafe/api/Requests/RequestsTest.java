@@ -21,7 +21,9 @@ import static org.junit.Assert.*;
  */
 public class RequestsTest {
     static String testEthAccount = "0x6e029820707c41f9ce04070930e3d650db769ed6";
-    static String testItem = "0x33e7e1ee81dcb63f28f264beedce6f6941bde451";
+    static String testItem = "0x88716eb7ec7e907f85c29e35b163fafad2c63186";
+    static String testItemRemove = "0x4260413f5cd11e9c9b9dc49d84dba2cf54428d45";
+    static String testItemName = "AK-47";
     static String rarity = "uncommon";
     static JsonObject testRecipe = Json.createObjectBuilder()
             .add("result","0x0")
@@ -123,10 +125,9 @@ public class RequestsTest {
     public void getRecipe() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            Set<String> response = nh.getRecipe("0x2f6e55f42deb93ffd47bbc96d776f6871b6790b5");
+            Set<String> response = nh.getRecipe(testItem);
             U.debugSet(response);
             assertNotNull("Is not null", response);
-            assertTrue("Contains Data", response.size() > 0);
         } catch (WebApplicationException e) {
             U.warn("There was an error returned with that request " + e.getResponse().getStatus());
         } catch (ProcessingException e) {
@@ -138,10 +139,9 @@ public class RequestsTest {
     public void getDeconstructionRecipe() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            Set<String> response = nh.getDeconstructionRecipe("0x2f6e55f42deb93ffd47bbc96d776f6871b6790b5");
+            Set<String> response = nh.getDeconstructionRecipe(testItem);
             U.debugSet(response);
             assertNotNull("Is not null", response);
-            assertTrue("Contains Data", response.size() > 0);
         } catch (WebApplicationException e) {
             U.warn("There was an error returned with that request " + e.getResponse().getStatus());
         } catch (ProcessingException e) {
@@ -257,7 +257,7 @@ public class RequestsTest {
     public void postSpawnItem() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            JsonObject response = nh.postSpawnItem("0x064ffa1ec3ad633dc098e4c2007f6689708ae23b", testEthAccount);
+            JsonObject response = nh.postSpawnItem("test", testEthAccount);
             U.debug(response.toString());
             assertNotNull("Is not null", response);
             assertTrue("Contains Data", response.size() > 0);
@@ -279,7 +279,7 @@ public class RequestsTest {
     public void postClearAvailibilty() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            JsonObject response = nh.postClearAvailibilty("0x064ffa1ec3ad633dc098e4c2007f6689708ae23b");
+            JsonObject response = nh.postClearAvailibilty(testItemRemove);
             U.debug(response.toString());
             assertNotNull("Is not null", response);
             assertTrue("Contains Data", response.size() > 0);
@@ -303,7 +303,6 @@ public class RequestsTest {
             Set<String> response = nh.getItemsList();
             U.debugSet(response);
             assertNotNull("Is not null", response);
-            assertTrue("Contains Data", response.size() > 0);
         } catch (WebApplicationException e) {
             U.warn("There was an error returned with that request " + e.getResponse().getStatus());
         } catch (ProcessingException e) {
@@ -315,10 +314,10 @@ public class RequestsTest {
     public void getItem() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            JsonObject response = nh.getItem("0xa571d199f6784a9de6124a87f13ce5e485da6ec4");
+            JsonObject response = nh.getItem(testItem);
             assertNotNull("Is not null", response);
             assertTrue("Contains Data", response.size() > 0);
-            assertTrue("Data Validation", response.getJsonObject("data").getString("address").equals("0xa571d199f6784a9de6124a87f13ce5e485da6ec4"));
+            assertTrue("Data Validation", response.getJsonObject("data").getString("address").equals(testItem));
         } catch (WebApplicationException e) {
             U.warn("There was an error returned with that request " + e.getResponse().getStatus());
         } catch (ProcessingException e) {
@@ -331,10 +330,10 @@ public class RequestsTest {
     public void getItemByAddress() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            JsonObject response = nh.getItemByAddress("0xa571d199f6784a9de6124a87f13ce5e485da6ec4");
+            JsonObject response = nh.getItemByAddress(testItem);
             assertNotNull("Is not null", response);
             assertTrue("Contains Data", response.size() > 0);
-            assertTrue("Data Validation", response.getJsonObject("data").getString("address").equals("0xa571d199f6784a9de6124a87f13ce5e485da6ec4"));
+            assertTrue("Data Validation", response.getJsonObject("data").getString("address").equals(testItem));
         } catch (WebApplicationException e) {
             U.warn("There was an error returned with that request " + e.getResponse().getStatus());
         } catch (ProcessingException e) {
@@ -449,12 +448,13 @@ public class RequestsTest {
     public void postLootboxAddItem() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
         try {
-            JsonObject response = nh.postLootboxAddItem("0x064ffa1ec3ad633dc098e4c2007f6689708ae23b", rarity);
+            JsonObject response = nh.postLootboxAddItem(testItem, rarity);
             assertNotNull("Is not null", response);
             assertTrue("Contains Data", response.size() > 0);
             assertTrue("Data Validation", response.getJsonObject("data").getString("tx").contains("0x"));
         } catch (WebApplicationException e) {
             U.warn("There was an error returned with that request " + e.getResponse().getStatus());
+            U.warn(e.getResponse().readEntity(JsonObject.class).toString());
         } catch (ProcessingException e) {
             U.error("That's no good!", e);
         }
