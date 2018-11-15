@@ -27,7 +27,7 @@ import java.util.Set;
  */
 
 public class NodeHandler {
-
+    //TODO Add in new End points, Add Raw Versions of End points, and Modify current end points to deprecated along with docs and Invalidation
     private final WebTarget webTarget;
     private final String apiUrl;
     private final String apiKey;
