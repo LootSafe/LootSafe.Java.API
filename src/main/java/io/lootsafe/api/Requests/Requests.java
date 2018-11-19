@@ -15,6 +15,10 @@ import java.util.*;
  */
 public class Requests {
 
+
+    /**
+     * V1
+     */
     //TODO Add in new endpoints
     public static final String balanceToken = "balance/token";
     public static final String balanceItem = "balance/item";
@@ -48,5 +52,28 @@ public class Requests {
     public static final String lootboxAdd = "lootbox/item/add";
     public static final String lootboxCostUpdate = "lootbox/cost";
     public static final String lootboxChanceUpdate = "lootbox/chances/update";
-    
+
+    /**
+     * Core V2
+     */
+
+    public static final String GetRegAssets = "registry/assets";
+    public static final String GetRegOwner = "registry/owner";
+
+    public static final String PostAsset = "registry/create";
+    public static final String GetFindAddress = "registry/find";
+
+    public static final String GetAssetOwner = "asset/owner";
+    public static final String PostSetMetaData = "asset/metadata/set";
+
+    public static final String GetListAssets = "asset/list";
+    public static final String PostSetMetadataFile = "asset/metadata/file/set/**/icon";
+
+    public static final String GetAsset = "asset/get";
+    public static final String GetMint = "asset/mint/**/10";
+
+    public static final String GetMetadata = "";
+
+
+
 }
