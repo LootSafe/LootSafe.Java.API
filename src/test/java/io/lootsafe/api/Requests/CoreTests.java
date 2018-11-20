@@ -52,7 +52,7 @@ public class CoreTests {
     @Test
     public void getAssets2(){
         NodeHandler nh = sv.startService().getNodeHandler();
-        U.debugList(nh.getListAssets());
+        U.debugAssetList(nh.getListAssets());
     }
 
 

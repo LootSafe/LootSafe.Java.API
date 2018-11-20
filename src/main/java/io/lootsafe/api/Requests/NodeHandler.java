@@ -1,6 +1,7 @@
 package io.lootsafe.api.Requests;
 
 import io.lootsafe.api.Data.AssetData;
+import io.lootsafe.api.Data.AssetInfo;
 import io.lootsafe.api.Data.AssetMetadata;
 import io.lootsafe.api.Data.RegistryMetadata;
 import io.lootsafe.api.ServiceProvider;
@@ -226,11 +227,23 @@ public class NodeHandler {
      * Attempts to get a list of all the assets available in the database.
      * @return Returns a List with all of the assets or null if the request failed.
      */
-    public List<String> getListAssets(){
+    public List<AssetInfo> getListAssets(){
         JsonObject response = getListAssetsRaw();
         if(response.getBoolean("error")) return null;
         JsonArray data = response.getJsonArray("data");
-        return Arrays.asList(data.toArray(new String[data.size()]));
+        List<AssetInfo> list = new LinkedList<>();
+        for(int ix = 0; ix < data.size() ; ix ++){
+            JsonObject item = data.getJsonObject(ix);
+            list.add(new AssetInfo(
+                    item.getString("symbol"),
+                    item.getString("identifier"),
+                    item.getString("name"),
+                    item.getString("_id"),
+                    item.getInt("__v")
+                    )
+            );
+        }
+        return list;
     }
 
     /**

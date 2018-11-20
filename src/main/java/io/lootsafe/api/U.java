@@ -1,5 +1,7 @@
 package io.lootsafe.api;
 
+import io.lootsafe.api.Data.AssetInfo;
+
 import java.util.*;
 
 /**
@@ -49,6 +51,16 @@ public class U {
     public static void debugList(List<String> list) {
         for (String string : list) {
             U.debug(string);
+        }
+    }
+
+    public static void debugAssetList(List<AssetInfo> list){
+        for(AssetInfo a : list){
+            U.debug("***" + a.getName() );
+            U.debug("   identifier: " + a.getIdentifier());
+            U.debug("   symbol: " + a.getSymbol());
+            U.debug("   _id: " + a.getId());
+            U.debug("   ___v: " + a.getV());
         }
     }
 }
