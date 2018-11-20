@@ -57,20 +57,22 @@ public class Requests {
      * Core V2
      */
 
+    public static final String DOC_URL_Text = "See <a href=\"https://documenter.getpostman.com/view/254497/RzZ3N3Z6\">LootSafe Core Docs</a>";
+
     public static final String GetRegAssets = "registry/assets";
     public static final String GetRegOwner = "registry/owner";
 
     public static final String PostAsset = "registry/create";
-    public static final String GetFindAddress = "registry/find";
+    public static final String GetFindAddress = "registry/find/%1";
 
-    public static final String GetAssetOwner = "asset/owner";
-    public static final String PostSetMetaData = "asset/metadata/set";
+    public static final String GetAssetOwner = "asset/owner/%1";
+    public static final String PostSetMetaData = "asset/metadata/set/%1";
 
     public static final String GetListAssets = "asset/list";
-    public static final String PostSetMetadataFile = "asset/metadata/file/set/**/icon";
+    public static final String PostSetMetadataFile = "asset/metadata/file/set/%1/%2";
 
-    public static final String GetAsset = "asset/get";
-    public static final String GetMint = "asset/mint/**/10";
+    public static final String GetAsset = "asset/get/%1";
+    public static final String GetMint = "asset/mint/%1/%2/%3";
 
     public static final String GetMetadata = "";
 
