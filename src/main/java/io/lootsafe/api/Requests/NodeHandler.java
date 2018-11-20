@@ -61,6 +61,7 @@ public class NodeHandler {
                     .request(MediaType.APPLICATION_JSON)
                     .header("key", apiKey)
                     .header("otp", otp)
+                    .header("secret", apiKey)
                     .get();
             U.debug("Status:" + response.getStatus());
             if (response.getStatus() != 200) {
@@ -88,6 +89,7 @@ public class NodeHandler {
                     .request(MediaType.APPLICATION_FORM_URLENCODED)
                     .header("key", apiKey)
                     .header("otp", otp)
+                    .header("secret", apiKey)
                     .post(Entity.json(input));
             U.debug("Status:" + response.getStatus());
             if (response.getStatus() != 200) {
@@ -385,6 +387,9 @@ public class NodeHandler {
 
     }
 
+    public boolean test(){
+        return true;
+    }
 
 
     /****************************************************************************************************/
