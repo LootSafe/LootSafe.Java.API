@@ -32,7 +32,7 @@ public class CoreTests {
     @Test
     public void mintAsset(){
         NodeHandler nh = sv.startService().getNodeHandler();
-        U.info(nh.mintAssetRaw(testEthAccount, testItem, 1).toString());
+        U.info(nh.mintAssetRaw(testEthAccount, testItem, 10).toString());
     }
 
     @Test
@@ -54,6 +54,19 @@ public class CoreTests {
         NodeHandler nh = sv.startService().getNodeHandler();
         U.debugAssetList(nh.getListAssets());
     }
+
+    @Test
+    public void getAsset(){
+        NodeHandler nh = sv.startService().getNodeHandler();
+        U.debug(nh.getAsset("philanthropy-draw").getSupply() + "");
+    }
+
+    @Test
+    public void getOwner(){
+        NodeHandler nh = sv.startService().getNodeHandler();
+        U.debug(nh.getRegOwner());
+    }
+
 
 
 
