@@ -350,8 +350,8 @@ public class NodeHandler {
      */
     public JsonObject mintAssetRaw(String walletAddress, String assetID, int quantity){
         JsonObject response = genericRequest(Requests.GetMint
-                                .replace("%1", walletAddress)
-                                .replace("%2", assetID)
+                                .replace("%1", assetID)
+                                .replace("%2", walletAddress)
                                 .replace("%3", quantity + ""));
         return response != null ? response : jsonError();
 
@@ -361,8 +361,8 @@ public class NodeHandler {
      * Attempts to get the registry's metadata as a RegistryMetadata object.
      * @return Returns a RegistryMetadata Object or null if the request failed.
      */
-    public RegistryMetadata GetMetadata(){
-        JsonObject response = GetMetadataRaw();
+    public RegistryMetadata getMetadata(){
+        JsonObject response = getMetadataRaw();
         if(response.getBoolean("error")) return null;
         JsonObject data = response.getJsonObject("data");
         return new RegistryMetadata(
@@ -375,7 +375,7 @@ public class NodeHandler {
      * Attempts to get the registry's metadata as a RegistryMetadata object.
      * @return Returns the raw Json for this request {@value Requests#DOC_URL_Text};
      */
-    public JsonObject GetMetadataRaw(){
+    public JsonObject getMetadataRaw(){
         JsonObject response = genericRequest(Requests.GetMetadata);
         return response != null ? response : jsonError();
     }
