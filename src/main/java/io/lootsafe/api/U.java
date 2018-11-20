@@ -1,9 +1,6 @@
 package io.lootsafe.api;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Adam Sanchez on 3/23/2018.
@@ -45,6 +42,12 @@ public class U {
 
     public static void debugSet(Set<String> set) {
         for (String string : set) {
+            U.debug(string);
+        }
+    }
+
+    public static void debugList(List<String> list) {
+        for (String string : list) {
             U.debug(string);
         }
     }

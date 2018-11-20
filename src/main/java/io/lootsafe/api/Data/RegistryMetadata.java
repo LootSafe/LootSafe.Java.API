@@ -10,15 +10,15 @@ public class RegistryMetadata {
         this.version = version;
     }
 
-    public void setRegistry(String registry) {
-        this.registry = registry;
+    public String getRegistry() {
+        return registry;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public String getProvider() {
+        return provider;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public int getVersion() {
+        return version;
     }
 }

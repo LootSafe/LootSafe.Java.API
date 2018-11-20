@@ -115,7 +115,11 @@ public class NodeHandler {
         JsonObject response = getRegAssetsRaw();
         if(response.getBoolean("error")) return null;
         JsonArray data = response.getJsonArray("data");
-        return Arrays.asList(data.toArray(new String[data.size()]));
+        List<String> list = new LinkedList<>();
+        for(int ix = 0; ix < data.size(); ix ++){
+            list.add(data.getString(ix));
+        }
+        return list;
     }
 
     /**
@@ -364,11 +368,10 @@ public class NodeHandler {
     public RegistryMetadata getMetadata(){
         JsonObject response = getMetadataRaw();
         if(response.getBoolean("error")) return null;
-        JsonObject data = response.getJsonObject("data");
         return new RegistryMetadata(
-                data.getString("registry"),
-                data.getString("provider"),
-                data.getInt("version"));
+                response.getString("registry"),
+                response.getString("provider"),
+                response.getInt("version"));
     }
 
     /**

@@ -23,10 +23,41 @@ public class CoreTests {
             .build();
 
     @Test
-    public void GetMetadata(){
+    public void getMetadata(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.info(nh.getMetadataRaw().toString());
+        U.info("Provider: " + nh.getMetadata().getProvider());
     }
+
+    @Test
+    public void mintAsset(){
+        NodeHandler nh = sv.startService().getNodeHandler();
+        U.info(nh.mintAssetRaw(testEthAccount, testItem, 1).toString());
+    }
+
+    @Test
+    public void createAsset(){
+        NodeHandler nh = sv.startService().getNodeHandler();
+        U.info(nh.createAssetRaw("BUTT", "Magic Butt", "buttopolis-of-magic").toString());
+        U.info(nh.createAssetRaw("CHIN", "We Beat China All The Time", "trump-on-fire").toString());
+        U.info(nh.createAssetRaw("XXX", "Your MOM", "sweet-ass-burn").toString());
+    }
+
+    @Test
+    public void getAssets(){
+        NodeHandler nh = sv.startService().getNodeHandler();
+        U.debugList(nh.getRegAssets());
+    }
+
+    @Test
+    public void getAssets2(){
+        NodeHandler nh = sv.startService().getNodeHandler();
+        U.debugList(nh.getListAssets());
+    }
+
+
+
+
 
 
 }
