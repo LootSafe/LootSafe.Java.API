@@ -54,7 +54,6 @@ public class ServiceProvider {
         return this;
     }
 
-    //TODO refactor to requests
     /**
      * Returns the NodeHandler
      * @return

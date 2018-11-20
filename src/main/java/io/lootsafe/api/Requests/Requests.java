@@ -19,7 +19,6 @@ public class Requests {
     /**
      * V1
      */
-    //TODO Add in new endpoints
     public static final String balanceToken = "balance/token";
     public static final String balanceItem = "balance/item";
     public static final String balanceItems = "balance/items";

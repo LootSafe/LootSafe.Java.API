@@ -231,7 +231,6 @@ public class RequestsTest {
         }
     }
 
-    //TODO Returns 500 in a 200
     @Test
     public void postNewItem() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
@@ -252,7 +251,6 @@ public class RequestsTest {
     }
 
 
-    //TODO Throwing 500 no info
     @Test
     public void postSpawnItem() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
@@ -325,7 +323,6 @@ public class RequestsTest {
         }
     }
 
-    //TODO API Call same as getItem ?
     @Test
     public void getItemByAddress() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
@@ -443,7 +440,6 @@ public class RequestsTest {
         }
     }
 
-    //TODO 500
     @Test
     public void postLootboxAddItem() throws Exception {
         NodeHandler nh = sv.startService().getNodeHandler();
