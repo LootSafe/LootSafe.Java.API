@@ -55,7 +55,7 @@ public class CoreTests {
         U.debugAssetList(nh.getListAssets());
     }
 
-    @Test
+
     public void getAsset(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.debug(nh.getAsset("philanthropy-draw").getSupply() + "");
