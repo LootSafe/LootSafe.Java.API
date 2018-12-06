@@ -72,7 +72,7 @@ public class NodeHandler {
             }
 
         } catch (ProcessingException e) {
-            U.debug("Error Contacting LootSafe Servers");
+            U.debug("Error Parsing Response From Server - Are we broken?");
             throw e;
         }
     }
@@ -90,7 +90,7 @@ public class NodeHandler {
                     .post(Entity.json(input));
             U.debug("Status:" + response.getStatus());
             if (response.getStatus() != 200) {
-                U.debug("There was an error while processing your request!");
+                U.debug("Error Parsing Response From Server - Are we broken?");
                 throw new WebApplicationException(response);
             } else {
                 JsonObject responseJson = response.readEntity(JsonObject.class);
