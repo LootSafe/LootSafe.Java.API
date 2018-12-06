@@ -22,7 +22,7 @@ public class CoreTests {
             .withVersion("1")
             .build();
 
-    @Test
+
     public void getMetadata(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.info(nh.getMetadataRaw().toString());
@@ -32,10 +32,10 @@ public class CoreTests {
     @Test
     public void mintAsset(){
         NodeHandler nh = sv.startService().getNodeHandler();
-        U.info(nh.mintAssetRaw(testEthAccount, testItem, 10).toString());
+        U.info(nh.mintAssetRaw("0xDd83c299B59BbAB987398154042aaF07dE6DC462", "0xF8C808C720561bEbA2d1d5b17c725F9d3FD48977", 10).toString());
     }
 
-    @Test
+
     public void createAsset(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.info(nh.createAssetRaw("BUTT", "Magic Butt", "buttopolis-of-magic").toString());
@@ -43,13 +43,13 @@ public class CoreTests {
         U.info(nh.createAssetRaw("XXX", "Your MOM", "sweet-ass-burn").toString());
     }
 
-    @Test
+
     public void getAssets(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.debugList(nh.getRegAssets());
     }
 
-    @Test
+
     public void getAssets2(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.debugAssetList(nh.getListAssets());
@@ -61,7 +61,7 @@ public class CoreTests {
         U.debug(nh.getAsset("philanthropy-draw").getSupply() + "");
     }
 
-    @Test
+
     public void getOwner(){
         NodeHandler nh = sv.startService().getNodeHandler();
         U.debug(nh.getRegOwner());

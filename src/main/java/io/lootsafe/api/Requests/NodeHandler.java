@@ -4,16 +4,13 @@ import io.lootsafe.api.Data.AssetData;
 import io.lootsafe.api.Data.AssetInfo;
 import io.lootsafe.api.Data.AssetMetadata;
 import io.lootsafe.api.Data.RegistryMetadata;
-import io.lootsafe.api.ServiceProvider;
 import io.lootsafe.api.U;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.client.RequestEntityProcessing;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.stream.JsonGenerator;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
@@ -21,7 +18,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
