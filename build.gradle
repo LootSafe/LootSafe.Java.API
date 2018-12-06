@@ -5,7 +5,7 @@ plugins {
 
 apply plugin: 'java'
 group 'io.lootsafe.api'
-version '2.0-SNAPSHOT'
+version '2.1-SNAPSHOT'
 description 'Java Library for LootSafe API'
 
 
